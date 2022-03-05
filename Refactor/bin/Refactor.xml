@@ -1,0 +1,402 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Refactor</name>
+    </assembly>
+    <members>
+        <member name="T:Refactor.Change">
+            <summary>
+            Type representing a single script change / string replacement operation
+            </summary>
+        </member>
+        <member name="F:Refactor.Change.Before">
+            <summary>
+            The text before applying the change
+            </summary>
+        </member>
+        <member name="F:Refactor.Change.After">
+            <summary>
+            The text after applying the change
+            </summary>
+        </member>
+        <member name="F:Refactor.Change.Offset">
+            <summary>
+            The starting index in the source code from where to begin the replacement
+            </summary>
+        </member>
+        <member name="F:Refactor.Change.Path">
+            <summary>
+            Path of the file in which changes should be applied
+            </summary>
+        </member>
+        <member name="F:Refactor.Change.Token">
+            <summary>
+            The token generating this change
+            </summary>
+        </member>
+        <member name="F:Refactor.Change.Data">
+            <summary>
+            Any additional data that should be included in this change object
+            </summary>
+        </member>
+        <member name="T:Refactor.CommandToken">
+            <summary>
+            Object representing a single command in a script
+            </summary>
+        </member>
+        <member name="P:Refactor.CommandToken.Type">
+            <summary>
+            The kind of token this is.
+            Must match the name of the token provider to use.
+            </summary>
+        </member>
+        <member name="P:Refactor.CommandToken.Text">
+            <summary>
+            The actual Text within the file that should be replaced after executing transform.
+            </summary>
+        </member>
+        <member name="P:Refactor.CommandToken.StartOffset">
+            <summary>
+            The start offset within the original code.
+            Used to identify the code's position in the original text when replacing with transformed content.
+            </summary>
+        </member>
+        <member name="F:Refactor.CommandToken.NewText">
+            <summary>
+            The updated text after running the token transformation
+            </summary>
+        </member>
+        <member name="F:Refactor.CommandToken.Parameters">
+            <summary>
+            The parameters that are KNOWN to be used in the command
+            </summary>
+        </member>
+        <member name="F:Refactor.CommandToken.ParametersKnown">
+            <summary>
+            Whether we are confident having identified all the parameters used
+            </summary>
+        </member>
+        <member name="F:Refactor.CommandToken.Splats">
+            <summary>
+            Any splats used in this command
+            </summary>
+        </member>
+        <member name="F:Refactor.CommandToken.HasSplat">
+            <summary>
+            Whether this command has any splats
+            </summary>
+        </member>
+        <member name="M:Refactor.CommandToken.#ctor(System.Management.Automation.Language.CommandAst)">
+            <summary>
+            Create a new command token off a CommandAst object
+            </summary>
+            <param name="Command">The Ast off which to build the Command Token</param>
+        </member>
+        <member name="M:Refactor.CommandToken.IsSplat(System.Management.Automation.Language.Ast)">
+            <summary>
+            Whether a given Ast object is a splat.
+            </summary>
+            <param name="AstObject">The Ast object to check</param>
+            <returns>Whether a given Ast object is a splat.</returns>
+        </member>
+        <member name="M:Refactor.CommandToken.GetChanges">
+            <summary>
+            Returns changes the token would apply.
+            Run after calling transform
+            </summary>
+            <returns>The changes applied by this token after its transformation</returns>
+        </member>
+        <member name="T:Refactor.Host">
+            <summary>
+            Global tools, data and settings related to the Refactor module library
+            </summary>
+        </member>
+        <member name="F:Refactor.Host.ProviderCommand">
+            <summary>
+            Command used to list all available token providers
+            </summary>
+        </member>
+        <member name="F:Refactor.Host.TransformCommand">
+            <summary>
+            Command used convert tokens
+            </summary>
+        </member>
+        <member name="T:Refactor.ScriptFile">
+            <summary>
+            Wrapper around a scriptfile, base from which tokens are generated and transform results are written back to
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptFile.Path">
+            <summary>
+            Path to the file being processed
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptFile.Ast">
+            <summary>
+            Original AST of the file being processed
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptFile.Modifiers">
+            <summary>
+            Any modification loci and length that have previously been applied to the file.
+            This is to ensure, that anything modified does not affect other transformations that were generated before said modification.
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptFile.Content">
+            <summary>
+            Actual string content of the file after modifications
+            </summary>
+        </member>
+        <member name="P:Refactor.ScriptFile.Saved">
+            <summary>
+            Whether the current modifications have been written back to file
+            </summary>
+        </member>
+        <member name="M:Refactor.ScriptFile.#ctor(System.String)">
+            <summary>
+            Generate a new scriptfile object off the path to a scriptfile
+            </summary>
+            <param name="Path">Path to the file being wrapped</param>
+        </member>
+        <member name="M:Refactor.ScriptFile.Reload">
+            <summary>
+            Applies the current state of the wrapped file to this in-memory object
+            </summary>
+        </member>
+        <member name="M:Refactor.ScriptFile.Save(System.Boolean)">
+            <summary>
+            Writes back the current Content back to file, saving all modifications applied so far.
+            </summary>
+            <param name="Backup">Whether to create a backup of the previous state. This will create a copy of that file in the same folder with ".backup" appended to the name.</param>
+        </member>
+        <member name="M:Refactor.ScriptFile.GetEffectiveIndex(System.Int32)">
+            <summary>
+            Returnes the starting index (or offset) in a file for a given original index, after taking modifications into consideration.
+            </summary>
+            <param name="Index">Index number as originally parsed out of the file</param>
+            <returns>The effective index number / offset to use instead for the current state.</returns>
+        </member>
+        <member name="M:Refactor.ScriptFile.GetTokens">
+            <summary>
+            Returns a list of all tokens, generated from all token providers that have been registered
+            </summary>
+            <returns>The processed tokens</returns>
+        </member>
+        <member name="M:Refactor.ScriptFile.Transform(Refactor.ScriptToken[])">
+            <summary>
+            Apply all transforms to the tokens specified
+            </summary>
+            <param name="Tokens">The tokens to transform</param>
+            <returns>A result object, reporting the state of each individual transformation</returns>
+        </member>
+        <member name="M:Refactor.ScriptFile.GetAst(System.String)">
+            <summary>
+            Get the Ast representing the code in the file specified.
+            Ignores all syntax errors
+            </summary>
+            <param name="Path">Path to the file to parse</param>
+            <returns>The Ast object representing the file specified</returns>
+        </member>
+        <member name="M:Refactor.ScriptFile.GetStringContent(System.String,System.Int32,System.Int32)">
+            <summary>
+            Safely returns the substring of the input string without exception.
+            Bad indexes will result in either an empty string or a string of unexpected length.
+            </summary>
+            <param name="Content">The source string to process</param>
+            <param name="Start">The start index from where to read</param>
+            <param name="Length">How many characters to read</param>
+            <returns>The selected substring</returns>
+        </member>
+        <member name="T:Refactor.ScriptToken">
+            <summary>
+            The base class for token objects.
+            Extend from this if you want to define your own custom token type
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptToken.Name">
+            <summary>
+            Name of the token.
+            Used for identifying transforms and matched against their index.
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptToken.Ast">
+            <summary>
+            AST object representing the code content of the Token.
+            Is optional
+            </summary>
+        </member>
+        <member name="P:Refactor.ScriptToken.Type">
+            <summary>
+            The kind of token this is.
+            Must match the name of the token provider to use.
+            </summary>
+        </member>
+        <member name="F:Refactor.ScriptToken.AllowPartial">
+            <summary>
+            Whether the changes wrought by the token can be applied if only some of them remainvalid
+            </summary>
+        </member>
+        <member name="M:Refactor.ScriptToken.Transform">
+            <summary>
+            Convert the token-related text by applying transformation rule as implemented by the provider
+            </summary>
+            <returns>The new text that should replace the original text represented by this token.</returns>
+        </member>
+        <member name="M:Refactor.ScriptToken.GetChanges">
+            <summary>
+            Returns changes the token would apply.
+            Run after calling transform
+            </summary>
+            <returns>The changes applied by this token after its transformation</returns>
+        </member>
+        <member name="T:Refactor.Splat">
+            <summary>
+            A splat object, including the resolved parameters it will potentially bind
+            </summary>
+        </member>
+        <member name="F:Refactor.Splat.Ast">
+            <summary>
+            Ast of the splat binding.
+            NOT of where the hashtable is first declared, but where it is ultimately used.
+            </summary>
+        </member>
+        <member name="F:Refactor.Splat.Parameters">
+            <summary>
+            Parameters bound through the splat
+            </summary>
+        </member>
+        <member name="F:Refactor.Splat.ParametersKnown">
+            <summary>
+            Whether we can authoratively claim to know which parameters may be bound through this splat.
+            </summary>
+        </member>
+        <member name="T:Refactor.TokenProvider">
+            <summary>
+            All the information needed to process a specific tokentype
+            </summary>
+        </member>
+        <member name="F:Refactor.TokenProvider.Name">
+            <summary>
+            Name of the provider
+            </summary>
+        </member>
+        <member name="F:Refactor.TokenProvider.TransformIndex">
+            <summary>
+            The property to use for indexing transforms
+            </summary>
+        </member>
+        <member name="F:Refactor.TokenProvider.TransformParametersMandatory">
+            <summary>
+            The parameters that must be specified when registering transforms
+            </summary>
+        </member>
+        <member name="F:Refactor.TokenProvider.TransformParameters">
+            <summary>
+            The parameters that may be specified when registering transforms.
+            Use to build out dynamic parameters for the specific register call
+            </summary>
+        </member>
+        <member name="F:Refactor.TokenProvider.Tokenizer">
+            <summary>
+            Code that parses an Ast provided and generates tokens from it
+            </summary>
+        </member>
+        <member name="F:Refactor.TokenProvider.Converter">
+            <summary>
+            Code that takes a token and applies relevant transforms to it
+            </summary>
+        </member>
+        <member name="T:Refactor.TransformationResult">
+            <summary>
+            Result of all changes applied to a single file
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResult.Path">
+            <summary>
+            path to the file being transformed
+            </summary>
+        </member>
+        <member name="P:Refactor.TransformationResult.FileName">
+            <summary>
+            Name of the file being transformed
+            </summary>
+        </member>
+        <member name="P:Refactor.TransformationResult.Success">
+            <summary>
+            Whether the transformation was 100 successful
+            </summary>
+        </member>
+        <member name="P:Refactor.TransformationResult.Count">
+            <summary>
+            Count of transformations executed
+            </summary>
+        </member>
+        <member name="P:Refactor.TransformationResult.SuccessCount">
+            <summary>
+            Count of successful transformations executed
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResult.Results">
+            <summary>
+            All individual transformation results that have been applied - successful or otherwise
+            </summary>
+        </member>
+        <member name="M:Refactor.TransformationResult.#ctor(System.String)">
+            <summary>
+            Create a new transformation result report
+            </summary>
+            <param name="Path">Path to the script file being transformed</param>
+        </member>
+        <member name="T:Refactor.TransformationResultEntry">
+            <summary>
+            Result of a single token transformation
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResultEntry.Success">
+            <summary>
+            Whether the transformation was successful
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResultEntry.Change">
+            <summary>
+            The change implemented
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResultEntry.Token">
+            <summary>
+            The Token the transformation was applied to
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResultEntry.Message">
+            <summary>
+            Any message included in the transformation
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResultEntry.Error">
+            <summary>
+            Any errors that happened during execution
+            </summary>
+        </member>
+        <member name="F:Refactor.TransformationResultEntry.Path">
+            <summary>
+            Path to the file being transformed
+            </summary>
+        </member>
+        <member name="M:Refactor.TransformationResultEntry.#ctor">
+            <summary>
+            Create a new, empty transformation result entry
+            </summary>
+        </member>
+        <member name="M:Refactor.TransformationResultEntry.#ctor(System.String,System.Boolean,Refactor.Change,Refactor.ScriptToken,System.String,System.Exception)">
+            <summary>
+            Create a new, filled out transformation result entry
+            </summary>
+            <param name="Path">Path to the file being transformed</param>
+            <param name="Success">Whether the transformation was successful</param>
+            <param name="Change">The actual change that was performed</param>
+            <param name="Token">The Token the transformation was applied to</param>
+            <param name="Message">Any message included in the transformation</param>
+            <param name="Error">Any errors that happened during execution</param>
+        </member>
+    </members>
+</doc>
