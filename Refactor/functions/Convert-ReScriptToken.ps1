@@ -21,7 +21,7 @@
 
 		Returns an object, showing what would have been done, had this been applied.
 	#>
-	[OutputType([PSCustomObject])]
+	[OutputType([Refactor.Change])]
 	[CmdletBinding()]
 	Param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]

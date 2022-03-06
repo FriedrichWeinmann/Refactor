@@ -18,7 +18,7 @@
 
 	.PARAMETER Ast
 		The Ast object to search.
-		Use "Read-Ast" to parse a scriptfile into an AST object.
+		Use "Read-ReAst" to parse a scriptfile into an AST object.
 	
 	.EXAMPLE
 		PS C:\> Get-ReSplat -Ast $ast
@@ -81,8 +81,6 @@
 
 		if ($declaration.Data.Right.Expression -isnot [System.Management.Automation.Language.HashtableAst]) {
 			$result.ParametersKnown = $false
-			$result
-			continue
 		}
 
 		foreach ($pair in $declaration.Data.Right.Expression.KeyValuePairs) {
@@ -118,7 +116,8 @@
 				}
 			}
 		}
-
+		# Include all relevant Ast objects
+		$result.Assignments = @($declaration.Data) + @($propertyAssignments.Data) | Remove-PSFNull -Enumerate
 		$result
 	}
 }

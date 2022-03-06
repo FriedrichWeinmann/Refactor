@@ -39,5 +39,14 @@
             this.Data = Data;
             this.Token = Token;
         }
+
+        /// <summary>
+        /// Text representation of the message
+        /// </summary>
+        /// <returns>text</returns>
+        public override string ToString()
+        {
+            return $"{Type}: {Text}";
+        }
     }
 }

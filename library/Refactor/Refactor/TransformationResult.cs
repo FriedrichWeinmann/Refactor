@@ -40,7 +40,7 @@ namespace Refactor
         /// <summary>
         /// Number of error messages written during the transformation
         /// </summary>
-        public int ErrerCount => Messages.Where(o => o.Type == MessageType.Error).Count();
+        public int ErrorCount => Messages.Where(o => o.Type == MessageType.Error).Count();
 
         /// <summary>
         /// All individual transformation results that have been applied - successful or otherwise

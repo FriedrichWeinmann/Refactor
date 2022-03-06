@@ -12,8 +12,9 @@ $users = Get-AzADUser
 $userConfig = Import-Csv $UsersPath
 
 $param = @{
-	Country     = 'USA'
-	CompanyName = 'Contoso'
+	Country       = 'USA'
+	'CompanyName' = 'Contoso'
+	"Foo"         = 42
 }
 
 dir @param
@@ -34,7 +35,7 @@ foreach ($entry in $userConfig) {
 	$param.$($properties.Name) = $entry.MailNickname
 	$param[$($properties.Name)] = $entry.MailNickname
 
-	Set-AzADUser -UPNOrObjectId $entry.UPN @param
+	Set-AzureADUser -UPNOrObjectId $entry.UPN @param
 }
 
 return

@@ -1,15 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <Configuration>
 	<ViewDefinitions>
-		<!-- Foo.Bar -->
+		<!-- Refactor.Change -->
 		<View>
-			<Name>Foo.Bar</Name>
+			<Name>Refactor.Change</Name>
 			<ViewSelectedBy>
-				<TypeName>Foo.Bar</TypeName>
+				<TypeName>Refactor.Change</TypeName>
 			</ViewSelectedBy>
 			<TableControl>
 				<AutoSize/>
 				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Path</Label>
+					</TableColumnHeader>
+					<TableColumnHeader/>
+					<TableColumnHeader/>
 					<TableColumnHeader/>
 					<TableColumnHeader/>
 				</TableHeaders>
@@ -17,10 +22,193 @@
 					<TableRowEntry>
 						<TableColumnItems>
 							<TableColumnItem>
-								<PropertyName>Foo</PropertyName>
+								<ScriptBlock>
+ ($_.Path -split "\\|/")[-1] 
+								</ScriptBlock>
 							</TableColumnItem>
 							<TableColumnItem>
-								<PropertyName>Bar</PropertyName>
+								<PropertyName>Offset</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Token</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Before</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>After</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+        <!-- Refactor.CommandToken -->
+        <View>
+            <Name>Refactor.CommandToken</Name>
+            <ViewSelectedBy>
+                <TypeName>Refactor.CommandToken</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader>
+                        <Label>ParamKnown</Label>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Parameters</Label>
+                    </TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Type</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>StartOffset</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock>
+ $_.ParametersKnown 
+                                </ScriptBlock>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <ScriptBlock>
+ $_.Parameters.Keys -join ", " 
+                                </ScriptBlock>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+
+        <!-- Refactor.Message -->
+        <View>
+            <Name>Refactor.Message</Name>
+            <ViewSelectedBy>
+                <TypeName>Refactor.Message</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Type</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Text</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Token</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+		
+		<!-- Refactor.TransformationResult -->
+		<View>
+			<Name>Refactor.TransformationResult</Name>
+			<ViewSelectedBy>
+				<TypeName>Refactor.TransformationResult</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<AutoSize/>
+				<TableHeaders>
+					<TableColumnHeader/>
+					<TableColumnHeader/>
+					<TableColumnHeader/>
+					<TableColumnHeader>
+						<Label>Info</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Warn</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Err</Label>
+					</TableColumnHeader>
+					<TableColumnHeader/>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>FileName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Success</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Count</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+ $_.InfoCount 
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+ $_.WarningCount 
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+ $_.ErrorCount 
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SuccessCount</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+		<!-- Refactor.TransformationResultEntry -->
+		<View>
+			<Name>Refactor.TransformationResultEntry</Name>
+			<ViewSelectedBy>
+				<TypeName>Refactor.TransformationResultEntry</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<AutoSize/>
+				<TableHeaders>
+					<TableColumnHeader/>
+					<TableColumnHeader/>
+					<TableColumnHeader/>
+					<TableColumnHeader/>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>Success</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Token</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Message</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Path</PropertyName>
 							</TableColumnItem>
 						</TableColumnItems>
 					</TableRowEntry>

@@ -15,6 +15,7 @@
 
 		Reads in the specified scriptfile
 	#>
+	[OutputType([Refactor.ScriptFile])]
 	[CmdletBinding()]
 	Param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]

@@ -4,16 +4,18 @@
 $converter = {
 	param (
 		[Refactor.ScriptToken]
-		$Token,
-
-		[bool]
-		$Preview
+		$Token
 	)
 	$transform = Get-ReTokenTransformationSet -Type Command | Where-Object Name -EQ $Token.Name
-	if (-not $transform -and -not $Preview) { return $Token.Text }
 
-	if ($transform.Warning) {
-		Write-PSFMessage -Level Warning -Message $transform.Warning -Target $Token -Data @{ Token = $Token; Transform = $transform }
+	if ($transform.MsgInfo) {
+		$Token.WriteMessage('Information', $transform.MsgInfo, $transform)
+	}
+	if ($transform.MsgWarning) {
+		$Token.WriteMessage('Warning', $transform.MsgWarning, $transform)
+	}
+	if ($transform.MsgError) {
+		$Token.WriteMessage('Error', $transform.MsgError, $transform)
 	}
 
 	$changed = $false
@@ -44,26 +46,102 @@ $converter = {
 		$changed = $true
 	}
 
-	$newText = $items -join " "
-	if (-not $changed) { $newText = $Token.Text }
-
-	if (-not $Preview) { return $newText }
-
-	[PSCustomObject]@{
-		OldText   = $Token.Text
-		NewText   = $newText
-		Token     = $Token
-		Command   = $Token.Name
-		Transform = $transform
-		Comment   = $transform.Comment
+	#region Conditional Messages
+	if ($transform.InfoParameters) { $transform.InfoParameters | ConvertTo-PSFHashtable }
+	foreach ($parameter in $transform.InfoParameters.Keys) {
+		if ($Token.Parameters[$parameter]) {
+			$Token.WriteMessage('Information', $transform.InfoParameters[$parameter], $transform)
+		}
 	}
+	if ($transform.WarningParameters) { $transform.WarningParameters | ConvertTo-PSFHashtable }
+	foreach ($parameter in $transform.WarningParameters.Keys) {
+		if ($Token.Parameters[$parameter]) {
+			$Token.WriteMessage('Warning', $transform.WarningParameters[$parameter], $transform)
+		}
+	}
+	if ($transform.ErrorParameters) { $transform.ErrorParameters | ConvertTo-PSFHashtable }
+	foreach ($parameter in $transform.ErrorParameters.Keys) {
+		if ($Token.Parameters[$parameter]) {
+			$Token.WriteMessage('Error', $transform.ErrorParameters[$parameter], $transform)
+		}
+	}
+	if (-not $Token.ParametersKnown) {
+		if ($transform.UnknownInfo) {
+			$Token.WriteMessage('Information', $transform.UnknownInfo, $transform)
+		}
+		if ($transform.UnknownWarning) {
+			$Token.WriteMessage('Warning', $transform.UnknownInfo, $transform)
+		}
+		if ($transform.UnknownError) {
+			$Token.WriteMessage('Error', $transform.UnknownInfo, $transform)
+		}
+	}
+	#endregion Conditional Messages
+
+	$Token.NewText = $items -join " "
+	if (-not $changed) { $Token.NewText = $Token.Text }
+
+	#region Add changes for splat properties
+	foreach ($property in $Token.Splats.Values.Parameters.Keys) {
+		if ($transform.Parameters.Keys -notcontains $property) { continue }
+
+		foreach ($ast in $Token.Splats.Values.Assignments) {
+			#region Case: Method Invocation
+			if ($ast -is [System.Management.Automation.Language.InvokeMemberExpressionAst]) {
+				if ($ast.Arguments[0].Value -ne $property) { continue }
+				$Token.AddChange($ast.Arguments[0].Extent.Text, ("'{0}'" -f ($transform.Parameters[$property] -replace "^'|'$|^`"|`"$")), $ast.Arguments[0].Extent.StartOffset, $ast)
+				continue
+			}
+			#endregion Case: Method Invocation
+
+			#region Case: Original assignment
+			if ($ast.Left -is [System.Management.Automation.Language.VariableExpressionAst]) {
+				foreach ($hashKey in $ast.Right.Expression.KeyValuePairs.Item1) {
+					if ($hashKey.Value -ne $property) { continue }
+					$Token.AddChange($hashKey.Extent.Text, ("'{0}'" -f ($transform.Parameters[$property] -replace "^'|'$|^`"|`"$")), $hashKey.Extent.StartOffset, $hashKey)
+				}
+				continue
+			}
+			#endregion Case: Original assignment
+
+			#region Case: Property assignment
+			if ($ast.Left -is [System.Management.Automation.Language.MemberExpressionAst]) {
+				if ($ast.Left.Member.Value -ne $property) { continue }
+				$Token.AddChange($ast.Left.Member.Extent.Text, $transform.Parameters[$property], $ast.Left.Member.Extent.StartOffset, $ast)
+				continue
+			}
+			#endregion Case: Property assignment
+
+			#region Case: Index assignment
+			if ($ast.Left -is [System.Management.Automation.Language.IndexExpressionAst]) {
+				if ($ast.Left.Index.Value -ne $property) { continue }
+				$Token.AddChange($ast.Left.Index.Extent.Text, ("'{0}'" -f ($transform.Parameters[$property] -replace "^'|'$|^`"|`"$")), $ast.Left.Index.Extent.StartOffset, $ast)
+				continue
+			}
+			#endregion Case: Index assignment
+		}
+	}
+	#endregion Add changes for splat properties
+
+	# Return changes
+	$Token.GetChanges()
 }
 $parameters = @(
 	'Name'
 	'NewName'
 	'Parameters'
-	'Warning'
-	'Comment'
+
+	'MsgInfo'
+	'MsgWarning'
+	'MsgError'
+
+	'InfoParameters'
+	'WarningParameters'
+	'ErrorParameters'
+
+	'UnknownInfo'
+	'UnknownWarning'
+	'UnknownError'
 )
 $param = @{
 	Name                = 'Command'

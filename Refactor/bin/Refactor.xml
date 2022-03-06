@@ -112,6 +112,15 @@
             </summary>
             <returns>The changes applied by this token after its transformation</returns>
         </member>
+        <member name="M:Refactor.CommandToken.AddChange(System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Add a new change to this token
+            </summary>
+            <param name="Before">The text before the change</param>
+            <param name="After">The text after the change</param>
+            <param name="Offset">The starting offset in the source text being modified</param>
+            <param name="Data">Any additional data to include (such as the Ast maybe)</param>
+        </member>
         <member name="T:Refactor.GenericToken">
             <summary>
             A generic token class, intended for all-script Token provider
@@ -139,6 +148,15 @@
             Run after calling transform
             </summary>
             <returns>The changes applied by this token after its transformation</returns>
+        </member>
+        <member name="M:Refactor.GenericToken.AddChange(System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Add a new change to this token
+            </summary>
+            <param name="Before">The text before the change</param>
+            <param name="After">The text after the change</param>
+            <param name="Offset">The starting offset in the source text being modified</param>
+            <param name="Data">Any additional data to include (such as the Ast maybe)</param>
         </member>
         <member name="M:Refactor.GenericToken.#ctor(System.String,System.String)">
             <summary>
@@ -195,6 +213,12 @@
             <param name="Text">The actual message text</param>
             <param name="Data">Any additional data to attach to the message</param>
             <param name="Token">The Token on which things went wrong</param>
+        </member>
+        <member name="M:Refactor.Message.ToString">
+            <summary>
+            Text representation of the message
+            </summary>
+            <returns>text</returns>
         </member>
         <member name="T:Refactor.MessageType">
             <summary>
@@ -363,6 +387,47 @@
             </summary>
             <returns>The default string representation of a token</returns>
         </member>
+        <member name="T:Refactor.SearchResult">
+            <summary>
+            Result of an Ast search
+            </summary>
+        </member>
+        <member name="P:Refactor.SearchResult.Start">
+            <summary>
+            Starting line in the file
+            </summary>
+        </member>
+        <member name="P:Refactor.SearchResult.End">
+            <summary>
+            Ending line in the file
+            </summary>
+        </member>
+        <member name="P:Refactor.SearchResult.FileName">
+            <summary>
+            name of the file from which the searchresult came
+            </summary>
+        </member>
+        <member name="P:Refactor.SearchResult.File">
+            <summary>
+            Path to the file searched
+            </summary>
+        </member>
+        <member name="P:Refactor.SearchResult.Data">
+            <summary>
+            The actual Ast object
+            </summary>
+        </member>
+        <member name="P:Refactor.SearchResult.Type">
+            <summary>
+            What kind of object it is
+            </summary>
+        </member>
+        <member name="M:Refactor.SearchResult.#ctor(System.Management.Automation.Language.Ast)">
+            <summary>
+            Create a new search result
+            </summary>
+            <param name="Ast">The Ast object found</param>
+        </member>
         <member name="T:Refactor.Splat">
             <summary>
             A splat object, including the resolved parameters it will potentially bind
@@ -466,7 +531,7 @@
             Number of warning messages written during the transformation
             </summary>
         </member>
-        <member name="P:Refactor.TransformationResult.ErrerCount">
+        <member name="P:Refactor.TransformationResult.ErrorCount">
             <summary>
             Number of error messages written during the transformation
             </summary>

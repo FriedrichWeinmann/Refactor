@@ -17,6 +17,7 @@
 
 		Searches for all function definitions
 	#>
+	[OutputType([Refactor.SearchResult])]
 	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory = $true)]
@@ -32,14 +33,7 @@
 		$results = $Ast.FindAll($Filter, $true)
 	
 		foreach ($result in $results) {
-			[PSCustomObject]@{
-				PSTypeName = 'Ast.SearchResult'
-				Start = $result.Extent.StartLineNumber
-				End   = $result.Extent.EndLineNumber
-				File  = $Ast.Extent.File
-				Data  = $result
-				Type = $result.GetType().Name
-			}
+			[Refactor.SearchResult]::new($result)
 		}
 	}
 }

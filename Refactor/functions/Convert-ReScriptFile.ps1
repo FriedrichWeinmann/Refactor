@@ -12,11 +12,11 @@
 
 		The provider is a plugin that performs the actual AST analysis and replacement.
 		For example, by default the "Command" provider allows renaming commands or their parameters.
-		Use Register-ASTokenprovider to define your own plugin.
+		Use Register-ReTokenprovider to define your own plugin.
 
 		Transformation Sets are rules that are applied to the tokens of a specific provider.
 		For example, the "Command" provider could receive a rule that renames the command "Get-AzureADUser" to "Get-MgUser"
-		Use Import-ASTokenTransformationSet to provide such rules.
+		Use Import-ReTokenTransformationSet to provide such rules.
 	
 	.PARAMETER Path
 		Path to the scriptfile to modify.

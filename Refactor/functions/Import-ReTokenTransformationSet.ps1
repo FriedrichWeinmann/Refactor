@@ -56,7 +56,7 @@
 
 			$msgDefault = @{
 				Level = "Warning"
-				FunctionName = 'Import-ASTokenTransformationSet'
+				FunctionName = 'Import-ReTokenTransformationSet'
 				PSCmdlet = $PSCmdlet
 				StringValues = $Path
 			}

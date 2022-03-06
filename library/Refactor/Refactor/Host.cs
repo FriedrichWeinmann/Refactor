@@ -8,11 +8,11 @@
         /// <summary>
         /// Command used to list all available token providers
         /// </summary>
-        public static string ProviderCommand = "Get-ASTokenProvider";
+        public static string ProviderCommand = "Get-ReTokenProvider";
 
         /// <summary>
         /// Command used convert tokens
         /// </summary>
-        public static string TransformCommand = "Convert-ASScriptToken";
+        public static string TransformCommand = "Convert-ReScriptToken";
     }
 }

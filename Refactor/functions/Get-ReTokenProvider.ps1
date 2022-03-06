@@ -25,6 +25,7 @@
 
 		List all token providers
 	#>
+	[OutputType([Refactor.TokenProvider])]
 	[CmdletBinding()]
 	Param (
 		[string]

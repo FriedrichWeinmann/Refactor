@@ -112,5 +112,24 @@ namespace Refactor
 
             return result;
         }
+
+        /// <summary>
+        /// Add a new change to this token
+        /// </summary>
+        /// <param name="Before">The text before the change</param>
+        /// <param name="After">The text after the change</param>
+        /// <param name="Offset">The starting offset in the source text being modified</param>
+        /// <param name="Data">Any additional data to include (such as the Ast maybe)</param>
+        public void AddChange(string Before, string After, int Offset, object Data = null)
+        {
+            Change change = new Change();
+            change.Before = Before;
+            change.After = After;
+            change.Offset = Offset;
+            change.Data = Data;
+            change.Token = this;
+            change.Path = Ast?.Extent.File;
+            ParameterChanges.Add(change);
+        }
     }
 }

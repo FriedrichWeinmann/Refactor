@@ -18,6 +18,7 @@
 
 		Returns all commands in the specified AST, mapping to the splats contained in $splats
 	#>
+	[OutputType([Refactor.CommandToken])]
 	[CmdletBinding()]
 	Param (
 		[Parameter(Mandatory = $true)]

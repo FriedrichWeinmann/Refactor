@@ -155,7 +155,7 @@ namespace Refactor
                 foreach (Change change in token.GetChanges().Where(o => o.IsValid(this)))
                 {
                     int index = GetEffectiveIndex(change.Offset);
-                    Content = Content.Substring(0, index) + change.After + Content.Substring(index + change.After.Length);
+                    Content = Content.Substring(0, index) + change.After + Content.Substring(index + change.Before.Length);
                     Modifiers[change.Offset] = change.After.Length - change.Before.Length;
                     results.Results.Add(new TransformationResultEntry(Path, true, change, token));
                 }

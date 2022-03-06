@@ -19,6 +19,7 @@
 
 		Returns all commands in all files under C:\scripts
 	#>
+	[OutputType([Refactor.CommandToken])]
 	[CmdletBinding()]
 	Param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Path')]
