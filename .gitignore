@@ -1,0 +1,22 @@
+﻿
+# ignore the settings folder and files for VSCode and PSS
+.vscode/*
+*.psproj
+*TempPoint*
+
+# Ignore staging info from Visual Studio
+library/Refactor/.vs/*
+library/Refactor/Refactor/bin/*
+library/Refactor/Refactor/obj/*
+
+# ignore PowerShell Studio MetaData
+Refactor/Refactor.psproj
+Refactor/Refactor.psproj.bak
+Refactor/Refactor.psprojs
+Refactor/Refactor.psproj
+
+# ignore the TestResults
+TestResults/*
+
+# ignore the publishing Directory
+publish/*
