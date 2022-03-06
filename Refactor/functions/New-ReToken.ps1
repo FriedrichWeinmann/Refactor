@@ -29,6 +29,7 @@
 		Creates a new token of type variable with name ComputerName.
 		Assumes you have registered a Token Provider of name variable.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
 	[OutputType([Refactor.GenericToken])]
 	[CmdletBinding()]
 	param (
