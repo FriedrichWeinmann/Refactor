@@ -1,12 +1,21 @@
 ﻿function Register-ReTokenProvider {
 	<#
 	.SYNOPSIS
-		Register a codeblock that when executed will return tokens from an Ast.
+		Register a Token Provider, that implements scanning and refactor logic.
 	
 	.DESCRIPTION
-		Register a codeblock that when executed will return tokens from an Ast.
-		The scriptblock should assume one input argument: The Ast to search.
-		It should then return [AzureScriptTools.ScriptToken] objects, representing relevant items in the Ast.
+		Register a Token Provider, that implements scanning and refactor logic.
+
+		For example, the "Command" Token Provider supports:
+		- Finding all commands called in a script, resolving all parameters used as possible.
+		- Renaming commands and their parameters.
+		
+		For examples on how to implement this, see:
+		Provider: https://github.com/FriedrichWeinmann/Refactor/blob/development/Refactor/internal/tokenProvider/command.token.ps1
+		Token Class: https://github.com/FriedrichWeinmann/Refactor/blob/development/library/Refactor/Refactor/CommandToken.cs
+
+		Note: Rather than implementing your on Token Class, you can use New-ReToken and the GenericToken class.
+		This allows you to avoid the need for coding your own class, but offers no extra functionality.
 	
 	.PARAMETER Name
 		Name of the token provider.
@@ -35,7 +44,8 @@
 		Registers a token provider.
 		A useful example for what to provide is a bit more than can be fit in an example block,
 		See an example provider here:
-		
+		Provider: https://github.com/FriedrichWeinmann/Refactor/blob/development/Refactor/internal/tokenProvider/command.token.ps1
+		Token Class: https://github.com/FriedrichWeinmann/Refactor/blob/development/library/Refactor/Refactor/CommandToken.cs
 	#>
 	[CmdletBinding()]
 	Param (

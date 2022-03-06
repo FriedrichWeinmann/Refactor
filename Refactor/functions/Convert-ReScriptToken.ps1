@@ -35,7 +35,7 @@
 			if (-not $provider) {
 				Stop-PSFFunction -Message "No provider found for type $($tokenObject.Type)" -Target $tokenObject -EnableException $true -Cmdlet $PSCmdlet
 			}
-			& $provider.Converter $tokenObject $Preview.ToBool()
+			& $provider.Converter $tokenObject
 		}
 	}
 }

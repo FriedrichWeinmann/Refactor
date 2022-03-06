@@ -24,5 +24,11 @@ namespace Refactor
         /// Whether we can authoratively claim to know which parameters may be bound through this splat.
         /// </summary>
         public bool ParametersKnown = true;
+
+        /// <summary>
+        /// Additional instances where the hashtable is modified before being used for splatting.
+        /// Allows transforms of Command to rename hashtable properties on parameter renames
+        /// </summary>
+        public Ast[] Assignments;
     }
 }

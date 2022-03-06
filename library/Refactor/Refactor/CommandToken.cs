@@ -53,6 +53,12 @@ namespace Refactor
         public bool HasSplat;
 
         /// <summary>
+        /// Store additional changes here as needed.
+        /// Intended to catch parameter renames that need to be applied to splatting hashtables.
+        /// </summary>
+        public List<Change> ParameterChanges = new List<Change>();
+
+        /// <summary>
         /// Create a new command token off a CommandAst object
         /// </summary>
         /// <param name="Command">The Ast off which to build the Command Token</param>
@@ -100,6 +106,9 @@ namespace Refactor
             change.Token = this;
             change.Data = Ast;
             result.Add(change);
+
+            if (ParameterChanges.Count > 0)
+                result.AddRange(ParameterChanges);
 
             return result;
         }

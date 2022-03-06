@@ -86,6 +86,12 @@
             Whether this command has any splats
             </summary>
         </member>
+        <member name="F:Refactor.CommandToken.ParameterChanges">
+            <summary>
+            Store additional changes here as needed.
+            Intended to catch parameter renames that need to be applied to splatting hashtables.
+            </summary>
+        </member>
         <member name="M:Refactor.CommandToken.#ctor(System.Management.Automation.Language.CommandAst)">
             <summary>
             Create a new command token off a CommandAst object
@@ -106,6 +112,41 @@
             </summary>
             <returns>The changes applied by this token after its transformation</returns>
         </member>
+        <member name="T:Refactor.GenericToken">
+            <summary>
+            A generic token class, intended for all-script Token provider
+            </summary>
+        </member>
+        <member name="P:Refactor.GenericToken.Type">
+            <summary>
+            The kind of token this is.
+            Must match the name of the token provider to use.
+            </summary>
+        </member>
+        <member name="F:Refactor.GenericToken.Data">
+            <summary>
+            A free field to add arbitrary data
+            </summary>
+        </member>
+        <member name="F:Refactor.GenericToken.Changes">
+            <summary>
+            The changes to apply during transform
+            </summary>
+        </member>
+        <member name="M:Refactor.GenericToken.GetChanges">
+            <summary>
+            Returns changes the token would apply.
+            Run after calling transform
+            </summary>
+            <returns>The changes applied by this token after its transformation</returns>
+        </member>
+        <member name="M:Refactor.GenericToken.#ctor(System.String,System.String)">
+            <summary>
+            Create a new generic token object
+            </summary>
+            <param name="Type">The type of the token. Must match the Token Provider name employing the object.</param>
+            <param name="Name">The name of the token. used to match against transforms.</param>
+        </member>
         <member name="T:Refactor.Host">
             <summary>
             Global tools, data and settings related to the Refactor module library
@@ -119,6 +160,60 @@
         <member name="F:Refactor.Host.TransformCommand">
             <summary>
             Command used convert tokens
+            </summary>
+        </member>
+        <member name="T:Refactor.Message">
+            <summary>
+            Status message of a transformation action
+            </summary>
+        </member>
+        <member name="F:Refactor.Message.Type">
+            <summary>
+            What level of information are we talking about?
+            </summary>
+        </member>
+        <member name="F:Refactor.Message.Text">
+            <summary>
+            The actual message text
+            </summary>
+        </member>
+        <member name="F:Refactor.Message.Data">
+            <summary>
+            Any additional data to attach to the message
+            </summary>
+        </member>
+        <member name="F:Refactor.Message.Token">
+            <summary>
+            The Token on which things went wrong
+            </summary>
+        </member>
+        <member name="M:Refactor.Message.#ctor(Refactor.MessageType,System.String,System.Object,Refactor.ScriptToken)">
+            <summary>
+            Create a new message object
+            </summary>
+            <param name="Type">What level of information are we talking about?</param>
+            <param name="Text">The actual message text</param>
+            <param name="Data">Any additional data to attach to the message</param>
+            <param name="Token">The Token on which things went wrong</param>
+        </member>
+        <member name="T:Refactor.MessageType">
+            <summary>
+            The category of a Message object
+            </summary>
+        </member>
+        <member name="F:Refactor.MessageType.Information">
+            <summary>
+            General Information
+            </summary>
+        </member>
+        <member name="F:Refactor.MessageType.Warning">
+            <summary>
+            Something was not entirely a success
+            </summary>
+        </member>
+        <member name="F:Refactor.MessageType.Error">
+            <summary>
+            Something went really wrong
             </summary>
         </member>
         <member name="T:Refactor.ScriptFile">
@@ -236,6 +331,19 @@
             Whether the changes wrought by the token can be applied if only some of them remainvalid
             </summary>
         </member>
+        <member name="F:Refactor.ScriptToken.Messages">
+            <summary>
+            List of messages that happened while either transforming or generating the token
+            </summary>
+        </member>
+        <member name="M:Refactor.ScriptToken.WriteMessage(Refactor.MessageType,System.String,System.Object)">
+            <summary>
+            Writes a message to the token
+            </summary>
+            <param name="Type">What kind of message?</param>
+            <param name="Message">The message to write</param>
+            <param name="Data">Any additional data to append</param>
+        </member>
         <member name="M:Refactor.ScriptToken.Transform">
             <summary>
             Convert the token-related text by applying transformation rule as implemented by the provider
@@ -248,6 +356,12 @@
             Run after calling transform
             </summary>
             <returns>The changes applied by this token after its transformation</returns>
+        </member>
+        <member name="M:Refactor.ScriptToken.ToString">
+            <summary>
+            The default string representation of a token
+            </summary>
+            <returns>The default string representation of a token</returns>
         </member>
         <member name="T:Refactor.Splat">
             <summary>
@@ -268,6 +382,12 @@
         <member name="F:Refactor.Splat.ParametersKnown">
             <summary>
             Whether we can authoratively claim to know which parameters may be bound through this splat.
+            </summary>
+        </member>
+        <member name="F:Refactor.Splat.Assignments">
+            <summary>
+            Additional instances where the hashtable is modified before being used for splatting.
+            Allows transforms of Command to rename hashtable properties on parameter renames
             </summary>
         </member>
         <member name="T:Refactor.TokenProvider">
@@ -336,6 +456,21 @@
             Count of successful transformations executed
             </summary>
         </member>
+        <member name="P:Refactor.TransformationResult.InfoCount">
+            <summary>
+            Number of information messages written during the transformation
+            </summary>
+        </member>
+        <member name="P:Refactor.TransformationResult.WarningCount">
+            <summary>
+            Number of warning messages written during the transformation
+            </summary>
+        </member>
+        <member name="P:Refactor.TransformationResult.ErrerCount">
+            <summary>
+            Number of error messages written during the transformation
+            </summary>
+        </member>
         <member name="F:Refactor.TransformationResult.Results">
             <summary>
             All individual transformation results that have been applied - successful or otherwise
@@ -346,6 +481,23 @@
             Create a new transformation result report
             </summary>
             <param name="Path">Path to the script file being transformed</param>
+        </member>
+        <member name="F:Refactor.TransformationResult.Messages">
+            <summary>
+            The messages that happened during this transformation
+            </summary>
+        </member>
+        <member name="M:Refactor.TransformationResult.DrainMessages(Refactor.ScriptToken)">
+            <summary>
+            Copy over all messages from the token object and restore the original messages
+            </summary>
+            <param name="Token">The token to drain the messages from</param>
+        </member>
+        <member name="M:Refactor.TransformationResult.PrepMessages(Refactor.ScriptToken)">
+            <summary>
+            Cache the current messages and create a new list just for this transformation
+            </summary>
+            <param name="Token">The Token for which to prep the messages</param>
         </member>
         <member name="T:Refactor.TransformationResultEntry">
             <summary>

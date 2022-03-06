@@ -34,6 +34,22 @@ namespace Refactor
         public bool AllowPartial;
 
         /// <summary>
+        /// List of messages that happened while either transforming or generating the token
+        /// </summary>
+        public List<Message> Messages = new List<Message>();
+
+        /// <summary>
+        /// Writes a message to the token
+        /// </summary>
+        /// <param name="Type">What kind of message?</param>
+        /// <param name="Message">The message to write</param>
+        /// <param name="Data">Any additional data to append</param>
+        public void WriteMessage(MessageType Type, string Message, object Data = null)
+        {
+            Messages.Add(new Message(Type, Message, Data, this));
+        }
+
+        /// <summary>
         /// Convert the token-related text by applying transformation rule as implemented by the provider
         /// </summary>
         /// <returns>The new text that should replace the original text represented by this token.</returns>
@@ -53,5 +69,14 @@ namespace Refactor
         /// </summary>
         /// <returns>The changes applied by this token after its transformation</returns>
         public abstract List<Change> GetChanges();
+
+        /// <summary>
+        /// The default string representation of a token
+        /// </summary>
+        /// <returns>The default string representation of a token</returns>
+        public override string ToString()
+        {
+            return $"{Type} -> {Name}";
+        }
     }
 }

@@ -50,7 +50,7 @@
 			$_.Start
 		} -Descending | Select-Object -First 1
 
-		$result = [AzureScriptTools.Splat]@{
+		$result = [Refactor.Splat]@{
 			Ast = $splat.Data
 		}
 

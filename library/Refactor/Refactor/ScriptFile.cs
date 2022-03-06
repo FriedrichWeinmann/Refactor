@@ -131,10 +131,13 @@ namespace Refactor
 
             foreach (ScriptToken token in Tokens)
             {
+                results.PrepMessages(token);
+
                 try { token.Transform(); }
                 catch (Exception e)
                 {
                     results.Results.Add(new TransformationResultEntry(Path, false, null, token, $"Error transforming { token.Type } : { e.Message }", e));
+                    results.DrainMessages(token);
                     continue;
                 }
 
@@ -144,6 +147,7 @@ namespace Refactor
                 if (!token.AllowPartial && total > valid)
                 {
                     results.Results.Add(new TransformationResultEntry(Path, false, null, token, "Text already modified! This usually happens when applying multiple transformations to the same region of code. Reload file and scan for tokens before proceeding."));
+                    results.DrainMessages(token);
                     continue;
                 }
 
@@ -155,6 +159,7 @@ namespace Refactor
                     Modifiers[change.Offset] = change.After.Length - change.Before.Length;
                     results.Results.Add(new TransformationResultEntry(Path, true, change, token));
                 }
+                results.DrainMessages(token);
             }
 
             return results;

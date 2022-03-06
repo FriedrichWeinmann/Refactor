@@ -37,7 +37,7 @@
 		}
 
 		foreach ($command in $allCommands) {
-			$result = [AzureScriptTools.CommandToken]::new($command.Data)
+			$result = [Refactor.CommandToken]::new($command.Data)
 
 			# Splats
 			foreach ($splatted in $command.Data.CommandElements | Where-Object Splatted) {
