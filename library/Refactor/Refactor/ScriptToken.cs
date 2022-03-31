@@ -29,6 +29,24 @@ namespace Refactor
         public abstract string Type { get; }
 
         /// <summary>
+        /// The first line of the token.
+        /// Cosmetic property for user convenience.
+        /// </summary>
+        public int Line
+        {
+            set { _Line = value; }
+            get
+            {
+                if (_Line > 0)
+                    return _Line;
+                if (Ast != null)
+                    return Ast.Extent.StartLineNumber;
+                return 0;
+            }
+        }
+        private int _Line;
+
+        /// <summary>
         /// Whether the changes wrought by the token can be applied if only some of them remainvalid
         /// </summary>
         public bool AllowPartial;

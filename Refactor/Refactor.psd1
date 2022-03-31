@@ -45,6 +45,7 @@
 		'Convert-ReScriptToken'
 		'Get-ReScriptFile'
 		'Get-ReSplat'
+		'Get-ReToken'
 		'Get-ReTokenProvider'
 		'Get-ReTokenTransformationSet'
 		'Import-ReTokenTransformationSet'

@@ -92,8 +92,9 @@ namespace Refactor
         /// <summary>
         /// Returns a list of all tokens, generated from all token providers that have been registered
         /// </summary>
+        /// <param name="Provider">A list of provider-names to filter by</param>
         /// <returns>The processed tokens</returns>
-        public ScriptToken[] GetTokens()
+        public ScriptToken[] GetTokens(string[] Provider = null)
         {
             List<ScriptToken> tokens = new List<ScriptToken>();
 
@@ -103,6 +104,8 @@ namespace Refactor
             {
                 runspace.AddCommand(Host.ProviderCommand);
                 runspace.AddParameter("Component", "Tokenizer");
+                if (Provider != null)
+                    runspace.AddParameter("Name", Provider);
                 foreach (ScriptBlock result in runspace.Invoke<ScriptBlock>())
                     providers.Add(result);
             }
