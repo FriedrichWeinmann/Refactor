@@ -28,7 +28,8 @@
 	[OutputType([Refactor.TokenProvider])]
 	[CmdletBinding()]
 	Param (
-		[string]
+		[PsfArgumentCompleter('Refactor.TokenProvider')]
+		[string[]]
 		$Name = '*',
 
 		[ValidateSet('All','Tokenizer','Converter')]
@@ -38,7 +39,12 @@
 	
 	process {
 		foreach ($provider in $script:tokenProviders.GetEnumerator()) {
-			if ($provider.Key -notlike $Name) { continue }
+			$matched = $false
+			foreach ($nameFilter in $Name) {
+				if ($provider.Key -like $nameFilter) { $matched = $true }
+			}
+			if (-not $matched) { continue }
+
 			if ($Component -eq 'Tokenizer') {
 				$provider.Value.Tokenizer
 				continue

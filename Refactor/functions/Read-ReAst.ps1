@@ -27,7 +27,7 @@
 	[CmdletBinding()]
 	param (
 		[Parameter(Position = 0, ParameterSetName = 'Script', Mandatory = $true)]
-		[System.Management.Automation.ScriptBlock]
+		[string]
 		$ScriptCode,
 		
 		[Parameter(Mandatory = $true, ParameterSetName = 'File', ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
@@ -61,9 +61,10 @@
 		
 		if ($ScriptCode)
 		{
+			if (-not $content) { $content = $ScriptCode }
 			$tokens = $null
 			$errors = $null
-			$ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptCode, [ref]$tokens, [ref]$errors)
+			$ast = [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$tokens, [ref]$errors)
 			[pscustomobject]@{
 				Ast	       = $ast
 				Tokens	   = $tokens

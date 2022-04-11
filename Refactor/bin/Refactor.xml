@@ -4,6 +4,61 @@
         <name>Refactor</name>
     </assembly>
     <members>
+        <member name="T:Refactor.BreakingChange">
+            <summary>
+            Result Container for a Breaking Change Scan
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Path">
+            <summary>
+            Path to the file being scanned
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Name">
+            <summary>
+            Name of the file being scanned
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Line">
+            <summary>
+            Line within the file where the result was found
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Command">
+            <summary>
+            Name of the command that represents a breaking change
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Parameter">
+            <summary>
+            Name of the parameter affected by the breaking change
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Type">
+            <summary>
+            What kind of break message is this. Generally only errors or warnings.
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Description">
+            <summary>
+            Description of the breaking change
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Module">
+            <summary>
+            Name of the module the command is from
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Version">
+            <summary>
+            Version in which the breaking change was introduced
+            </summary>
+        </member>
+        <member name="F:Refactor.BreakingChange.Tags">
+            <summary>
+            Tags assigned to this breaking change
+            </summary>
+        </member>
         <member name="T:Refactor.Change">
             <summary>
             Type representing a single script change / string replacement operation
@@ -240,6 +295,26 @@
             Something went really wrong
             </summary>
         </member>
+        <member name="T:Refactor.PSHelp">
+            <summary>
+            Represents the Comment Based Help of a function
+            </summary>
+        </member>
+        <member name="T:Refactor.PSHelpExample">
+            <summary>
+            An example text for the help of a function
+            </summary>
+        </member>
+        <member name="F:Refactor.PSHelpExample.Code">
+            <summary>
+            The example code, showing how to use this command
+            </summary>
+        </member>
+        <member name="F:Refactor.PSHelpExample.Description">
+            <summary>
+            The text describing what is happening
+            </summary>
+        </member>
         <member name="T:Refactor.ScriptFile">
             <summary>
             Wrapper around a scriptfile, base from which tokens are generated and transform results are written back to
@@ -295,10 +370,11 @@
             <param name="Index">Index number as originally parsed out of the file</param>
             <returns>The effective index number / offset to use instead for the current state.</returns>
         </member>
-        <member name="M:Refactor.ScriptFile.GetTokens">
+        <member name="M:Refactor.ScriptFile.GetTokens(System.String[])">
             <summary>
             Returns a list of all tokens, generated from all token providers that have been registered
             </summary>
+            <param name="Provider">A list of provider-names to filter by</param>
             <returns>The processed tokens</returns>
         </member>
         <member name="M:Refactor.ScriptFile.Transform(Refactor.ScriptToken[])">
@@ -348,6 +424,12 @@
             <summary>
             The kind of token this is.
             Must match the name of the token provider to use.
+            </summary>
+        </member>
+        <member name="P:Refactor.ScriptToken.Line">
+            <summary>
+            The first line of the token.
+            Cosmetic property for user convenience.
             </summary>
         </member>
         <member name="F:Refactor.ScriptToken.AllowPartial">
