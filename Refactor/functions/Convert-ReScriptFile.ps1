@@ -43,6 +43,7 @@
 
 		Converts all scripts under C:\scripts according to the provided transformation sets.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
 	[OutputType([Refactor.TransformationResult])]
 	[CmdletBinding(SupportsShouldProcess = $true)]
 	Param (
@@ -72,7 +73,7 @@
 			
 			try {
 				$result = $scriptfile.Transform($scriptfile.GetTokens($ProviderName))
-				Invoke-PSFProtectedCommand -ActionString 'Replacing content of script' -Target $file -ScriptBlock {
+				Invoke-PSFProtectedCommand -Action 'Replacing content of script' -Target $file -ScriptBlock {
 					$scriptfile.Save($Backup.ToBool())
 				} -PSCmdlet $PSCmdlet -EnableException $EnableException -Continue
 				$result

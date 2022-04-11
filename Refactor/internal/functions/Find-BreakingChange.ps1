@@ -23,6 +23,7 @@
 
 		Find all instances of breaking changes found within $ast.
 	#>
+	[OutputType([Refactor.BreakingChange])]
 	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory = $true)]

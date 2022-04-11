@@ -26,6 +26,7 @@
 
 		Returns all registered breaking change configuration entries.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
 	[CmdletBinding()]
 	param (
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
