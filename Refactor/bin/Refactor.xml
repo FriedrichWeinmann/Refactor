@@ -320,7 +320,7 @@
             Wrapper around a scriptfile, base from which tokens are generated and transform results are written back to
             </summary>
         </member>
-        <member name="F:Refactor.ScriptFile.Path">
+        <member name="P:Refactor.ScriptFile.Path">
             <summary>
             Path to the file being processed
             </summary>
@@ -351,6 +351,13 @@
             Generate a new scriptfile object off the path to a scriptfile
             </summary>
             <param name="Path">Path to the file being wrapped</param>
+        </member>
+        <member name="M:Refactor.ScriptFile.#ctor(System.String,System.String)">
+            <summary>
+            Generate a new scriptfile object off the content of a scriptcode without any backing file
+            </summary>
+            <param name="Name">The name of the content</param>
+            <param name="Content">The actual script code / content of the script</param>
         </member>
         <member name="M:Refactor.ScriptFile.Reload">
             <summary>
@@ -391,6 +398,14 @@
             </summary>
             <param name="Path">Path to the file to parse</param>
             <returns>The Ast object representing the file specified</returns>
+        </member>
+        <member name="M:Refactor.ScriptFile.GetAstFromText(System.String)">
+            <summary>
+            Get the Ast representing the code in the text specified.
+            Ignores all syntax errors
+            </summary>
+            <param name="Content">The text content to parse</param>
+            <returns>The Ast object representing the text specified</returns>
         </member>
         <member name="M:Refactor.ScriptFile.GetStringContent(System.String,System.Int32,System.Int32)">
             <summary>

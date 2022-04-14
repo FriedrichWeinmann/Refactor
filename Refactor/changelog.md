@@ -1,5 +1,11 @@
 ﻿# Changelog
 
+## 1.1.11 (2022-04-14)
+
++ Upd: Get-ReScriptFile - added option to specify name and scriptcode, rather than being limited to reading from file.
++ Upd: CommandToken - will display line rather than offset by default
++ Upd: ScriptFile.cs - added ability to define script files from their text content, rather than just their path, in order to support working with non-file based services (scanning code retrieved from an API, ...)
+
 ## 1.1.8 (2022-04-11)
 
 + New: Component: Breaking Change - Scan script files for breaking changes
