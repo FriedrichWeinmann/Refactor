@@ -17,7 +17,13 @@ namespace Refactor
         /// <summary>
         /// Path to the file being processed
         /// </summary>
-        public string Path;
+        public string Path
+        {
+            get => String.IsNullOrEmpty(_Path) ? _Name : _Path;
+            set => _Path = value;
+        }
+        private string _Path;
+        private string _Name;
 
         /// <summary>
         /// Original AST of the file being processed
@@ -34,11 +40,20 @@ namespace Refactor
         /// Actual string content of the file after modifications
         /// </summary>
         public string Content;
+        private string _OriginalContent;
 
         /// <summary>
         /// Whether the current modifications have been written back to file
         /// </summary>
-        public bool Saved { get { return Content == File.ReadAllText(Path); } }
+        public bool Saved
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(_Path))
+                    return Content == File.ReadAllText(Path);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Generate a new scriptfile object off the path to a scriptfile
@@ -52,13 +67,34 @@ namespace Refactor
         }
 
         /// <summary>
+        /// Generate a new scriptfile object off the content of a scriptcode without any backing file
+        /// </summary>
+        /// <param name="Name">The name of the content</param>
+        /// <param name="Content">The actual script code / content of the script</param>
+        public ScriptFile(string Name, string Content)
+        {
+            _OriginalContent = Content;
+            _Name = Name;
+            Reload();
+        }
+
+        /// <summary>
         /// Applies the current state of the wrapped file to this in-memory object
         /// </summary>
         public void Reload()
         {
-            Content = File.ReadAllText(Path);
             Modifiers = new Dictionary<int, int>();
-            Ast = GetAst(Path);
+
+            if (!String.IsNullOrEmpty(_Path))
+            {
+                Content = File.ReadAllText(_Path);
+                Ast = GetAst(Path);
+            }
+            else
+            {
+                Content = _OriginalContent;
+                Ast = GetAstFromText(Content);
+            }
         }
 
         /// <summary>
@@ -67,6 +103,9 @@ namespace Refactor
         /// <param name="Backup">Whether to create a backup of the previous state. This will create a copy of that file in the same folder with ".backup" appended to the name.</param>
         public void Save(bool Backup = false)
         {
+            if (String.IsNullOrEmpty(_Path))
+                throw new InvalidOperationException("Cannot save a script that was not originally read from file!");
+
             if (Backup)
                 File.Copy(Path, Regex.Replace(Path, "\\.([^\\.]+)$", ".backup.$1"), true);
             File.WriteAllText(Path, Content, new UTF8Encoding(true));
@@ -179,6 +218,19 @@ namespace Refactor
             var tokens = new Token[0];
             var errors = new ParseError[0];
             return Parser.ParseFile(Path, out tokens, out errors);
+        }
+
+        /// <summary>
+        /// Get the Ast representing the code in the text specified.
+        /// Ignores all syntax errors
+        /// </summary>
+        /// <param name="Content">The text content to parse</param>
+        /// <returns>The Ast object representing the text specified</returns>
+        public static Ast GetAstFromText(string Content)
+        {
+            var tokens = new Token[0];
+            var errors = new ParseError[0];
+            return Parser.ParseInput(Content, out tokens, out errors);
         }
 
         /// <summary>
