@@ -116,7 +116,7 @@
                                 <PropertyName>Name</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>StartOffset</PropertyName>
+                                <PropertyName>Line</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <ScriptBlock>
