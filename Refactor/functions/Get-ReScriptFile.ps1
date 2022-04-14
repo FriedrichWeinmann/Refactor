@@ -41,8 +41,10 @@
 		$Content
 	)
 	process {
-		foreach ($file in $Path | Resolve-PSFPath) {
-			[Refactor.ScriptFile]::new($file)
+		if ($Path) {
+			foreach ($file in $Path | Resolve-PSFPath) {
+				[Refactor.ScriptFile]::new($file)
+			}
 		}
 
 		if ($Name -and $Content) {

@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.1.12 (2022-04-15)
+
++ Fix: Get-ReScriptFile - generates error when not providing a path
+
 ## 1.1.11 (2022-04-14)
 
 + Upd: Get-ReScriptFile - added option to specify name and scriptcode, rather than being limited to reading from file.
