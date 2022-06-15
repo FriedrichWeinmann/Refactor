@@ -370,6 +370,16 @@
             </summary>
             <param name="Backup">Whether to create a backup of the previous state. This will create a copy of that file in the same folder with ".backup" appended to the name.</param>
         </member>
+        <member name="M:Refactor.ScriptFile.WriteTo(System.String,System.String)">
+            <summary>
+            Writes the stored script content to the specified path.
+            </summary>
+            <param name="Path">The folder to write ti. Must exist.</param>
+            <param name="Name">Name of the file to write. Defaults to the original filename if not specified.</param>
+            <exception cref="T:System.ArgumentNullException">Not specifying a path is a pretty bad idea</exception>
+            <exception cref="T:System.ArgumentException">If for some reason no filename can be determined, this error will happen. This would happen when generating a ScriptFile object with a combination of Name &amp; Content with the Name being an empty string.</exception>
+            <exception cref="T:System.IO.InvalidDataException">If the resulting path is not a legal path or the parent folder does not exist, that would be an issue.</exception>
+        </member>
         <member name="M:Refactor.ScriptFile.GetEffectiveIndex(System.Int32)">
             <summary>
             Returnes the starting index (or offset) in a file for a given original index, after taking modifications into consideration.
@@ -416,6 +426,14 @@
             <param name="Start">The start index from where to read</param>
             <param name="Length">How many characters to read</param>
             <returns>The selected substring</returns>
+        </member>
+        <member name="M:Refactor.ScriptFile.IsValidPath(System.String)">
+            <summary>
+            Checks, whether a path is fundamentally valid.
+            It does not check for existence or whether the path is rooted or relative.
+            </summary>
+            <param name="Path">The path to validate</param>
+            <returns>Whether the path is valid</returns>
         </member>
         <member name="T:Refactor.ScriptToken">
             <summary>

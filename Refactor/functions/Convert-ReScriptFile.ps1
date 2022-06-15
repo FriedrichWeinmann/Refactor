@@ -28,6 +28,9 @@
 	.PARAMETER Backup
 		Whether to create a backup of the file before modifying it.
 
+	.PARAMETER OutPath
+		Folder to which to write the converted scriptfile.
+
 	.PARAMETER Force
 		Whether to update files that end in ".backup.ps1"
 		By default these are skipped, as they would be the backup-files of previous conversions ... or even the current one, when providing input via pipeline!
@@ -45,7 +48,7 @@
 	#>
 	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
 	[OutputType([Refactor.TransformationResult])]
-	[CmdletBinding(SupportsShouldProcess = $true)]
+	[CmdletBinding(SupportsShouldProcess = $true, DefaultParameterSetName = 'inplace')]
 	Param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
 		[PsfValidateScript('PSFramework.Validate.FSPath.File', ErrorString = 'PSFramework.Validate.FSPath.File')]
@@ -57,31 +60,52 @@
 		[string[]]
 		$ProviderName = '*',
 
+		[Parameter(ParameterSetName = 'inplace')]
 		[switch]
 		$Backup,
+
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'path')]
+		[PsfValidateScript('PSFramework.Validate.FSPath.Folder', ErrorString = 'PSFramework.Validate.FSPath.Folder')]
+		[string]
+		$OutPath,
 
 		[switch]
 		$Force
 	)
 	
+	begin {
+		$lastResolvedPath = ""
+	}
 	process
 	{
+		if ($OutPath -ne $lastResolvedPath) {
+			$resolvedOutPath = Resolve-PSFPath -Path $OutPath
+			$lastResolvedPath = $OutPath
+		}
 		foreach ($file in $Path | Resolve-PSFPath) {
-			if (-not $Force -and $file -match '\.backup\.ps1$|\.backup\.psm1$') { continue }
+			if (-not $Force -and -not $OutPath -and $file -match '\.backup\.ps1$|\.backup\.psm1$') { continue }
 			Write-PSFMessage -Message 'Processing file: {0}' -StringValues $file
 			$scriptfile = [Refactor.ScriptFile]::new($file)
 			
 			try {
 				$result = $scriptfile.Transform($scriptfile.GetTokens($ProviderName))
-				Invoke-PSFProtectedCommand -Action 'Replacing content of script' -Target $file -ScriptBlock {
-					$scriptfile.Save($Backup.ToBool())
-				} -PSCmdlet $PSCmdlet -EnableException $EnableException -Continue
-				$result
-				Write-PSFMessage -Message 'Finished processing file: {0} | Transform Count {1} | Success {2}' -StringValues $file, $result.Count, $result.Success
 			}
 			catch {
 				Write-PSFMessage -Level Error -Message 'Failed to convert file: {0}' -StringValues $file -Target $scriptfile -ErrorRecord $_ -EnableException $true -PSCmdlet $PSCmdlet
 			}
+
+			if ($OutPath) {
+				Invoke-PSFProtectedCommand -Action 'Replacing content of script' -Target $file -ScriptBlock {
+					$scriptfile.WriteTo($resolvedOutPath, "")
+				} -PSCmdlet $PSCmdlet -EnableException $EnableException -Continue
+			}
+			else {
+				Invoke-PSFProtectedCommand -Action 'Replacing content of script' -Target $file -ScriptBlock {
+					$scriptfile.Save($Backup.ToBool())
+				} -PSCmdlet $PSCmdlet -EnableException $EnableException -Continue
+			}
+			$result
+			Write-PSFMessage -Message 'Finished processing file: {0} | Transform Count {1} | Success {2}' -StringValues $file, $result.Count, $result.Success
 		}
 	}
 }

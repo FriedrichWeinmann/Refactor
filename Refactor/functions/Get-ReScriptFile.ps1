@@ -37,6 +37,7 @@
 		$Name,
 
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Content')]
+		[AllowEmptyString()]
 		[string]
 		$Content
 	)
@@ -47,7 +48,7 @@
 			}
 		}
 
-		if ($Name -and $Content) {
+		if ($Name -and $PSBoundParameters.ContainsKey('Content')) {
 			[Refactor.ScriptFile]::new($Name, $Content)
 		}
 	}
