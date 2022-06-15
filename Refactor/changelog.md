@@ -1,5 +1,11 @@
 ﻿# Changelog
 
+## 1.1.15 (2022-06-15)
+
++ Upd: Class: ScriptFile - added WriteTo method to support exporting to a path other than the source file
++ Upd: Convert-ReScriptFile - added `-OutPath` parameter to support writing the converted files to another folder
++ Fix: Get-ReScriptFile - fails to create over an empty file-content
+
 ## 1.1.12 (2022-04-15)
 
 + Fix: Get-ReScriptFile - generates error when not providing a path

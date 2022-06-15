@@ -113,6 +113,35 @@ namespace Refactor
         }
 
         /// <summary>
+        /// Writes the stored script content to the specified path.
+        /// </summary>
+        /// <param name="Path">The folder to write ti. Must exist.</param>
+        /// <param name="Name">Name of the file to write. Defaults to the original filename if not specified.</param>
+        /// <exception cref="ArgumentNullException">Not specifying a path is a pretty bad idea</exception>
+        /// <exception cref="ArgumentException">If for some reason no filename can be determined, this error will happen. This would happen when generating a ScriptFile object with a combination of Name &amp; Content with the Name being an empty string.</exception>
+        /// <exception cref="InvalidDataException">If the resulting path is not a legal path or the parent folder does not exist, that would be an issue.</exception>
+        public void WriteTo(string Path, string Name = "")
+        {
+            if (String.IsNullOrEmpty(Path))
+                throw new ArgumentNullException("Path", "Path cannot be empty");
+            if (!(new DirectoryInfo(Path)).Exists)
+                throw new InvalidDataException($"Directory does not exist: {Path}");
+
+            if (String.IsNullOrEmpty(Name))
+                Name = _Name;
+            if (String.IsNullOrEmpty(Name))
+                Name = _Path.Split('/', '\\')[(_Path.Split('/', '\\').Length - 1)];
+            if (String.IsNullOrEmpty(Name))
+                throw new ArgumentException("Cannot resolve Name of file to create!");
+
+            string newPath = System.IO.Path.Combine(Path, Name);
+            if (!IsValidPath(newPath))
+                throw new InvalidDataException($"Resolved to invalid path: {newPath}");
+
+            File.WriteAllText(newPath, Content, new UTF8Encoding(true));
+        }
+
+        /// <summary>
         /// Returnes the starting index (or offset) in a file for a given original index, after taking modifications into consideration.
         /// </summary>
         /// <param name="Index">Index number as originally parsed out of the file</param>
@@ -248,6 +277,21 @@ namespace Refactor
             if (Start + Length > Content.Length)
                 return Content.Substring(Start);
             return Content.Substring(Start, Length);
+        }
+    
+        /// <summary>
+        /// Checks, whether a path is fundamentally valid.
+        /// It does not check for existence or whether the path is rooted or relative.
+        /// </summary>
+        /// <param name="Path">The path to validate</param>
+        /// <returns>Whether the path is valid</returns>
+        private static bool IsValidPath(string Path)
+        {
+            if (String.IsNullOrEmpty(Path))
+                return false;
+
+            string pattern = String.Join("|", System.IO.Path.GetInvalidPathChars());
+            return Regex.IsMatch(Path, pattern);
         }
     }
 }
