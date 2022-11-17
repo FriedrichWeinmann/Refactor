@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.1.16 (2022-11-17)
+
++ New: Function Provider - Detects function definitions and allows renaming them, including examples in the help.
+
 ## 1.1.15 (2022-06-15)
 
 + Upd: Class: ScriptFile - added WriteTo method to support exporting to a path other than the source file

@@ -176,6 +176,60 @@
             <param name="Offset">The starting offset in the source text being modified</param>
             <param name="Data">Any additional data to include (such as the Ast maybe)</param>
         </member>
+        <member name="T:Refactor.FunctionToken">
+            <summary>
+            Token representing a function definition
+            </summary>
+        </member>
+        <member name="P:Refactor.FunctionToken.Type">
+            <summary>
+            The kind of token this is.
+            Must match the name of the token provider to use.
+            </summary>
+        </member>
+        <member name="P:Refactor.FunctionToken.Text">
+            <summary>
+            The actual Text within the file that should be replaced after executing transform.
+            </summary>
+        </member>
+        <member name="P:Refactor.FunctionToken.StartOffset">
+            <summary>
+            The start offset within the original code.
+            Used to identify the code's position in the original text when replacing with transformed content.
+            </summary>
+        </member>
+        <member name="F:Refactor.FunctionToken.NewText">
+            <summary>
+            The updated text after running the token transformation
+            </summary>
+        </member>
+        <member name="F:Refactor.FunctionToken.Changes">
+            <summary>
+            The changes applied to this Token.
+            Filled by calling Transform()
+            </summary>
+        </member>
+        <member name="M:Refactor.FunctionToken.#ctor(System.Management.Automation.Language.FunctionDefinitionAst)">
+            <summary>
+            Create a new function token based off a function definition ast.
+            </summary>
+            <param name="Definition">The AST describing a function definition</param>
+        </member>
+        <member name="M:Refactor.FunctionToken.GetChanges">
+            <summary>
+            The changes applied to this token.
+            </summary>
+            <returns>The changes applied to this token.</returns>
+        </member>
+        <member name="M:Refactor.FunctionToken.AddChange(System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Add a new change to this token
+            </summary>
+            <param name="Before">The text before the change</param>
+            <param name="After">The text after the change</param>
+            <param name="Offset">The starting offset in the source text being modified</param>
+            <param name="Data">Any additional data to include (such as the Ast maybe)</param>
+        </member>
         <member name="T:Refactor.GenericToken">
             <summary>
             A generic token class, intended for all-script Token provider
@@ -467,7 +521,7 @@
         </member>
         <member name="F:Refactor.ScriptToken.AllowPartial">
             <summary>
-            Whether the changes wrought by the token can be applied if only some of them remainvalid
+            Whether the changes wrought by the token can be applied if only some of them remain valid
             </summary>
         </member>
         <member name="F:Refactor.ScriptToken.Messages">

@@ -134,6 +134,41 @@
             </TableControl>
         </View>
 
+        <!-- Refactor.FunctionToken -->
+        <View>
+            <Name>Refactor.FunctionToken</Name>
+            <ViewSelectedBy>
+                <TypeName>Refactor.FunctionToken</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <AutoSize/>
+                <TableHeaders>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                    <TableColumnHeader/>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Type</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Line</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Length</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+
         <!-- Refactor.Message -->
         <View>
             <Name>Refactor.Message</Name>
