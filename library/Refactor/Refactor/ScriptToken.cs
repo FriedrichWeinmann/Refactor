@@ -47,7 +47,7 @@ namespace Refactor
         private int _Line;
 
         /// <summary>
-        /// Whether the changes wrought by the token can be applied if only some of them remainvalid
+        /// Whether the changes wrought by the token can be applied if only some of them remain valid
         /// </summary>
         public bool AllowPartial;
 
