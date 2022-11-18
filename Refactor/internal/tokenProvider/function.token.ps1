@@ -24,7 +24,7 @@ $converter = {
 
 	#region Function Name
 	if ($transform.NewName) {
-		$startIndex = $Token.Ast.Extent.Text.IndexOf($Token.Ast.Name)
+		$startIndex = $Token.Ast.Extent.Text.IndexOf($Token.Ast.Name) + $Token.Ast.Extent.StartOffset
 		$Token.AddChange($Token.Ast.Name, $transform.NewName, $startIndex, $null)
 
 		$helpData = $Token.Ast.GetHelpContent()

@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.1.17 (2022-11-18)
+
++ Fix: Function Provider - "StartIndex cannot be less than zero"
+
 ## 1.1.16 (2022-11-17)
 
 + New: Function Provider - Detects function definitions and allows renaming them, including examples in the help.
