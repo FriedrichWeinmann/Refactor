@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.1.18 (2023-04-12)
+
++ Fix: Import-ReTokenTransformationSet - silently fails to load json files
+
 ## 1.1.17 (2022-11-18)
 
 + Fix: Function Provider - "StartIndex cannot be less than zero"
