@@ -62,7 +62,8 @@
 			}
 
 			$defaultType = $Data.Type
-			foreach ($entry in $Data.Content.Values) {
+			$contentHash = $Data.Content | ConvertTo-PSFHashtable
+			foreach ($entry in $contentHash.Values) {
 				$entryHash = $entry | ConvertTo-PSFHashtable
 				if ($defaultType -and -not $entryHash.Type) {
 					$entryHash.Type = $defaultType

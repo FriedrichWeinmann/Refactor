@@ -3,7 +3,7 @@
 	RootModule         = 'Refactor.psm1'
 	
 	# Version number of this module.
-	ModuleVersion      = '1.1.17'
+	ModuleVersion      = '1.1.18'
 	
 	# ID used to uniquely identify this module
 	GUID               = '505d7400-5106-4643-9c64-c8e430fa0032'
