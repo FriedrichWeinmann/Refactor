@@ -56,6 +56,11 @@ namespace Refactor
         }
 
         /// <summary>
+        /// Whether the scriptfile was originally generated from an actual file
+        /// </summary>
+        public bool FromFile { get => !String.IsNullOrEmpty(_Path); }
+
+        /// <summary>
         /// Generate a new scriptfile object off the path to a scriptfile
         /// </summary>
         /// <param name="Path">Path to the file being wrapped</param>

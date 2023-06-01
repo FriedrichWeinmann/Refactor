@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## 1.2.22 (2023-05-31)
+
++ New: Read-ReAstComponent - search for ast elements of a given type. Intended for simplified code updates.
++ New: Test-ReSyntax - tests the syntax of the specified script or code
++ New: Write-ReAstComponent - Updates a scriptfile that was read from using Read-ReAstComponent.
++ New: Token Provider: Ast - generic Ast object token scanner, designed for manual conversion logic.
+
 ## 1.1.18 (2023-04-12)
 
 + Fix: Import-ReTokenTransformationSet - silently fails to load json files

@@ -4,6 +4,50 @@
         <name>Refactor</name>
     </assembly>
     <members>
+        <member name="T:Refactor.AstToken">
+            <summary>
+            Generic AST token.
+            </summary>
+        </member>
+        <member name="P:Refactor.AstToken.Type">
+            <summary>
+            The kind of token this is.
+            Must match the name of the token provider to use.
+            </summary>
+        </member>
+        <member name="P:Refactor.AstToken.Text">
+            <summary>
+            The actual Text within the file that should be replaced after executing transform.
+            </summary>
+        </member>
+        <member name="P:Refactor.AstToken.StartOffset">
+            <summary>
+            The start offset within the original code.
+            Used to identify the code's position in the original text when replacing with transformed content.
+            </summary>
+        </member>
+        <member name="P:Refactor.AstToken.Length">
+            <summary>
+            Total length of the ast
+            </summary>
+        </member>
+        <member name="F:Refactor.AstToken.NewText">
+            <summary>
+            The text the Ast should have
+            </summary>
+        </member>
+        <member name="M:Refactor.AstToken.#ctor(System.Management.Automation.Language.Ast)">
+            <summary>
+            Create a new ast token based off an ast object.
+            </summary>
+            <param name="AstObject">The AST describing a powershell element</param>
+        </member>
+        <member name="M:Refactor.AstToken.GetChanges">
+            <summary>
+            The changes applied to this token.
+            </summary>
+            <returns>The changes applied to this token.</returns>
+        </member>
         <member name="T:Refactor.BreakingChange">
             <summary>
             Result Container for a Breaking Change Scan
@@ -176,6 +220,132 @@
             <param name="Offset">The starting offset in the source text being modified</param>
             <param name="Data">Any additional data to include (such as the Ast maybe)</param>
         </member>
+        <member name="T:Refactor.Component.AstResult">
+            <summary>
+            Result set of an Ast Token scan. Returned by Read-ReAstComponent, processed by Write-ReAstComponent.
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.Type">
+            <summary>
+            What kind of AST was it?
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.FileName">
+            <summary>
+            Name of the file the AST token was generated from.
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.Line">
+            <summary>
+            Starting line in the file that the AST token was generated from.
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.Path">
+            <summary>
+            Path of the file the AST token was generated from.
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.Text">
+            <summary>
+            Text of the AST
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.NewText">
+            <summary>
+            New text of the AST
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.AstResult.Ast">
+            <summary>
+            Ast object found
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.AstResult.Token">
+            <summary>
+            The token generated from the AST token provider
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.AstResult.File">
+            <summary>
+            The open ScriptFile, used for applying changes
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.AstResult.Result">
+            <summary>
+            The scan result of any given target processed by Read-ReAstComponent.
+            In case you need to link all results from a single scan.
+            </summary>
+        </member>
+        <member name="M:Refactor.Component.AstResult.#ctor(Refactor.AstToken,Refactor.ScriptFile,Refactor.Component.ScriptResult)">
+            <summary>
+            Generate a new AST Result
+            </summary>
+            <param name="Token">The token being represented</param>
+            <param name="File">The scriptfile scanned</param>
+            <param name="Result">The result object containing all tokens from a given scan.</param>
+        </member>
+        <member name="T:Refactor.Component.ScriptFileConverted">
+            <summary>
+            A summary object of a post-conversion scriptfile that was generated from Write-ReAstComponent.
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptFileConverted.Name">
+            <summary>
+            Name of the file converted
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptFileConverted.Path">
+            <summary>
+            Path to the file that was converted (whether in situ or via OutPath to another path, this points at the original source)
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptFileConverted.Text">
+            <summary>
+            Text-content of the file after it was transformed.
+            </summary>
+        </member>
+        <member name="P:Refactor.Component.ScriptFileConverted.ConversionID">
+            <summary>
+            The ID of the search result that was converted. Just in case one needs to track things.
+            </summary>
+        </member>
+        <member name="M:Refactor.Component.ScriptFileConverted.#ctor(Refactor.Component.ScriptResult)">
+            <summary>
+            Create a new script file object representing a converted object.
+            </summary>
+            <param name="Result">The search result that was applied.</param>
+        </member>
+        <member name="T:Refactor.Component.ScriptResult">
+            <summary>
+            Result of a single token scan using Read-ReAstComponent
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptResult.File">
+            <summary>
+            The scriptfile scanned
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptResult.Tokens">
+            <summary>
+            The list of tokens found
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptResult.Types">
+            <summary>
+            The types of AST scanned for.
+            </summary>
+        </member>
+        <member name="F:Refactor.Component.ScriptResult.ID">
+            <summary>
+            Unique ID to differentiate between the executions
+            </summary>
+        </member>
+        <member name="M:Refactor.Component.ScriptResult.ToString">
+            <summary>
+            Default string display of this object
+            </summary>
+            <returns>The ID of the scan</returns>
+        </member>
         <member name="T:Refactor.FunctionToken">
             <summary>
             Token representing a function definition
@@ -198,9 +368,9 @@
             Used to identify the code's position in the original text when replacing with transformed content.
             </summary>
         </member>
-        <member name="F:Refactor.FunctionToken.NewText">
+        <member name="P:Refactor.FunctionToken.Length">
             <summary>
-            The updated text after running the token transformation
+            Total length of the function definition
             </summary>
         </member>
         <member name="F:Refactor.FunctionToken.Changes">
@@ -398,6 +568,11 @@
         <member name="P:Refactor.ScriptFile.Saved">
             <summary>
             Whether the current modifications have been written back to file
+            </summary>
+        </member>
+        <member name="P:Refactor.ScriptFile.FromFile">
+            <summary>
+            Whether the scriptfile was originally generated from an actual file
             </summary>
         </member>
         <member name="M:Refactor.ScriptFile.#ctor(System.String)">

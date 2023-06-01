@@ -3,7 +3,7 @@
 	RootModule         = 'Refactor.psm1'
 	
 	# Version number of this module.
-	ModuleVersion      = '1.1.18'
+	ModuleVersion      = '1.2.22'
 	
 	# ID used to uniquely identify this module
 	GUID               = '505d7400-5106-4643-9c64-c8e430fa0032'
@@ -54,12 +54,15 @@
 		'Import-ReTokenTransformationSet'
 		'New-ReToken'
 		'Read-ReAst'
+		'Read-ReAstComponent'
 		'Read-ReScriptCommand'
 		'Register-ReBreakingChange'
 		'Register-ReTokenProvider'
 		'Register-ReTokenTransformation'
 		'Search-ReAst'
 		'Search-ReBreakingChange'
+		'Test-ReSyntax'
+		'Write-ReAstComponent'
 	)
 	
 	# Cmdlets to export from this module
