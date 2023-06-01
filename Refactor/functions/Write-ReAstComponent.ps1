@@ -32,11 +32,17 @@
 	.PARAMETER Confirm
 		If this switch is enabled, you will be prompted for confirmation before executing any operations that change state.
 	
+	.PARAMETER EnableException
+		This parameters disables user-friendly warnings and enables the throwing of exceptions.
+		This is less user friendly, but allows catching exceptions in calling scripts.
+
 	.EXAMPLE
 		PS C:\> Write-ReAstComponent -Components $scriptParts
 		
 		Writes back the components in $scriptParts, which had previously been generated using Read-ReAstComponent, then had their content modified.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
+	[OutputType([Refactor.Component.ScriptFileConverted])]
 	[CmdletBinding(SupportsShouldProcess = $true, DefaultParameterSetName = 'default')]
 	param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]

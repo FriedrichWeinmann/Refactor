@@ -30,12 +30,17 @@
 	
 	.PARAMETER Select
 		The AST types to select for.
+
+	.PARAMETER EnableException
+		This parameters disables user-friendly warnings and enables the throwing of exceptions.
+		This is less user friendly, but allows catching exceptions in calling scripts.
 	
 	.EXAMPLE
 		PS C:\> Get-ChildItem -Recurse -Filter *.ps1 | Read-ReAstComponent -Select FunctionDefinitionAst, ForEachStatementAst
 		
 		Reads all ps1 files in the current folder and subfolders and scans for all function definitions and foreach statements.
 	#>
+	[OutputType([Refactor.Component.AstResult])]
 	[CmdletBinding(DefaultParameterSetName = 'File')]
 	param (
 		[Parameter(Position = 0, ParameterSetName = 'Script', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
@@ -60,7 +65,10 @@
 		[PsfArgumentCompleter('Refactor.AstTypes')]
 		[PsfValidateSet(TabCompletion = 'Refactor.AstTypes')]
 		[string[]]
-		$Select
+		$Select,
+
+		[switch]
+		$EnableException
 	)
 
 	process {
@@ -78,7 +86,7 @@
 		foreach ($pathEntry in $Path) {
 			try { $resolvedPaths = Resolve-PSFPath -Path $pathEntry -Provider FileSystem }
 			catch {
-				Write-Error $_
+				Write-PSFMessage -Level Warning -Message 'Failed to resolve path: {0}' -StringValues $pathEntry -ErrorRecord $_ -EnableException $EnableException
 				continue
 			}
 
@@ -94,7 +102,7 @@
 		foreach ($pathEntry in $LiteralPath) {
 			try { $resolvedPath = (Get-Item -LiteralPath $pathEntry -ErrorAction Stop).FullName }
 			catch {
-				Write-Error $_
+				Write-PSFMessage -Level Warning -Message 'Failed to resolve path: {0}' -StringValues $pathEntry -ErrorRecord $_ -EnableException $EnableException
 				continue
 			}
 

@@ -61,6 +61,7 @@
 		'Register-ReTokenTransformation'
 		'Search-ReAst'
 		'Search-ReBreakingChange'
+		'Test-ReSyntax'
 		'Write-ReAstComponent'
 	)
 	
