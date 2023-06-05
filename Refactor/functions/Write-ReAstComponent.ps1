@@ -77,9 +77,9 @@
 		$grouped = $componentObjects | Group-Object { $_.Result.Id }
 		foreach ($tokenGroup in $grouped) {
 			$scriptFile = $tokenGroup.Group[0].File
-			$before = $scriptFile.Text
+			$before = $scriptFile.Content
 			$null = $scriptFile.Transform($tokenGroup.Group.Token)
-			if (-not $OutPath -and $before -eq $scriptFile.Text) { continue }
+			if (-not $OutPath -and $before -eq $scriptFile.Content) { continue }
 
 			if ($PassThru) {
 				[Refactor.Component.ScriptFileConverted]::new($tokenGroup.Group[0].Result)
