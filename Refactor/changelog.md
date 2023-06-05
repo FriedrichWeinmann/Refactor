@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.2.23 (2023-06-05)
+
++ Fix: Test-ReSyntax - returns wrong result
+
 ## 1.2.22 (2023-05-31)
 
 + New: Read-ReAstComponent - search for ast elements of a given type. Intended for simplified code updates.

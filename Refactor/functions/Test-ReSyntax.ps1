@@ -63,6 +63,6 @@
 		$tokens = $null
 		$errors = $null
 		$null = [System.Management.Automation.Language.Parser]::ParseFile($fileItem.FullName, [ref]$tokens, [ref]$errors)
-		($errors -as [bool]) -eq (-not $Not)
+		($errors -as [bool]) -eq $Not
 	}
 }
