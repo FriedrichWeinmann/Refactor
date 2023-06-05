@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.2.24 (2023-06-05)
+
++ Fix: Write-ReAstComponent - fixed change detection
+
 ## 1.2.23 (2023-06-05)
 
 + Fix: Test-ReSyntax - returns wrong result
