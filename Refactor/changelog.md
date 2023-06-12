@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.2.25 (2023-06-12)
+
++ Fix: Test-ReSyntax - returns always true when providing direct code as string.
+
 ## 1.2.24 (2023-06-05)
 
 + Fix: Write-ReAstComponent - fixed change detection

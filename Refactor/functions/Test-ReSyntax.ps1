@@ -47,17 +47,17 @@
 	process {
 		if ($Code) {
 			$result = Read-ReAst -ScriptCode $Code
-			($result.Errors -as [bool]) -eq (-not $Not)
+			return ($result.Errors -as [bool]) -eq $Not
 		}
 		if ($Path) {
 			try { $resolvedPath = Resolve-PSFPath -Path $Path -Provider FileSystem -SingleItem }
-			catch { return $false -eq (-not $Not) }
+			catch { return $Not }
 
 			$fileItem = Get-Item -LiteralPath $resolvedPath
 		}
 		if ($LiteralPath) {
 			try { $fileItem = Get-Item -LiteralPath $LiteralPath -ErrorAction Stop }
-			catch { return $false -eq (-not $Not)}
+			catch { return $Not }
 		}
 
 		$tokens = $null
