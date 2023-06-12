@@ -51,13 +51,13 @@
 		}
 		if ($Path) {
 			try { $resolvedPath = Resolve-PSFPath -Path $Path -Provider FileSystem -SingleItem }
-			catch { return $Not }
+			catch { return $Not -as [bool] } # as bool to satisfy output type PSSA warnings and unify result type
 
 			$fileItem = Get-Item -LiteralPath $resolvedPath
 		}
 		if ($LiteralPath) {
 			try { $fileItem = Get-Item -LiteralPath $LiteralPath -ErrorAction Stop }
-			catch { return $Not }
+			catch { return $Not -as [bool] }
 		}
 
 		$tokens = $null
